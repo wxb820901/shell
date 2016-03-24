@@ -1,14 +1,32 @@
 package com.b.jbehavetest.util.translate;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.commons.io.FileUtils;
+
 public class TanslatorHandler {
 	public static final String GIVEN = "Given";
 	public static final String WHEN = "When";
 	public static final String THEN = "Then";
 
-	public static String handle(String input, boolean isWithSN) {
+	
+	public static String handleFile(String name, File file, boolean isWithSN ) throws IOException{
+		StringBuilder content = new StringBuilder();
+		content.append(header(name));
+		Iterator<String> lines = FileUtils.lineIterator(file);
+		while(lines.hasNext()){
+			content.append(handleLine(lines.next(), isWithSN));
+		}
+		content.append(footer());
+		return content.toString();
+	}
+	
+	public static String handleLine(String input, boolean isWithSN) {
 
 		if (input == null) {
-			return null;
+			return "";
 		}
 		if (input.startsWith(GIVEN)) {
 			return givenHandle(input, isWithSN);
@@ -89,7 +107,7 @@ public class TanslatorHandler {
 	}
 
 	public static String otherHandle(String input) {
-		return null;
+		return "";
 	}
 
 	public static String generateMethodName(String input) {
@@ -218,7 +236,7 @@ public class TanslatorHandler {
 		return true;
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
 		System.out.println(header("hole"));
 		System.out.println("//" + upperFirstChar("abc"));
 		System.out.println("//" + generateMethodName("abc csd hkjl 1"));
@@ -226,6 +244,8 @@ public class TanslatorHandler {
 		System.out.println(whenHandle("When 1 abc csd hkjl 4.40", true));
 		System.out.println(thenHandle("Then abc csd hkjl is 2.4"));
 		System.out.println(footer());
+		System.out.println("============================================================");
+		System.out.println(handleFile("hole", new File("C:/UBS/Dev/b/eclipse-jee-mars-1-win32-x86_64/workspace/jbehavetest/src/test/java/com/b/jbehavetest/demo_story.story"), true));
 	}
 
 }

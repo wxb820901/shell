@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                            http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <context:component-scan base-package="com.b.jbehavetest.spring"></context:component-scan>
+ 
+    <bean class="org.jbehave.core.configuration.spring.SpringStoryReporterBuilder" init-method="withDefaultFormats">
+        <property name="formats">
+            <list>
+                <value>HTML</value>
+                <value>CONSOLE</value>
+            </list>
+        </property>
+    </bean>
+    
+    
+    
+    <bean class="org.jbehave.core.io.LoadFromClasspath">
+        <constructor-arg>
+            <bean class="org.jbehave.core.embedder.EmbedderClassLoader">
+                <constructor-arg>
+                    <list>
+                        <value>target/classes</value>
+                    </list>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+    <bean class="org.jbehave.core.steps.ParameterConverters$DateConverter">
+        <constructor-arg>
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg value="yyyy-MM-dd">
+            </constructor-arg></bean>
+        </constructor-arg>
+    </bean>
+    <bean class="org.jbehave.core.parsers.RegexPrefixCapturingPatternParser">
+        <constructor-arg value="%">
+    </constructor-arg></bean>
+    <bean class="org.jbehave.core.configuration.spring.SpringStoryControls">
+        <property name="dryRun" value="false"></property>
+        <property name="skipScenariosAfterFailure" value="false"></property>
+    </bean>
+    <bean class="org.jbehave.core.configuration.spring.SpringStoryReporterBuilder" init-method="withDefaultFormats">
+        <property name="formats">
+            <list>
+                <value>CONSOLE</value>
+                <value>TXT</value>
+                <value>HTML</value>
+                <value>XML</value>
+            </list>
+        </property>
+    </bean>
+    
+</beans>
